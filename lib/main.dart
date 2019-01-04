@@ -14,20 +14,20 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.yellow.shade700,
         accentColor: Colors.black
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
