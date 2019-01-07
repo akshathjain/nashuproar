@@ -45,24 +45,20 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: _categories == null ? 0 : _categories.length,
+      initialIndex: _categories == null ? 0 : _categories.indexWhere((category) => category["is-home"] == true), //set this based on index of homepage in _categories
       child: Scaffold(
         appBar: AppBar(
           title: Text("NASH Uproar"),
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: _createTabs(),
-          ),
+          bottom: _createTabBar(),
         ),
         body: _createBody(),
       ),
     );
   }
 
-  List<Tab> _createTabs(){
-    if(_categories == null)
-      return null;
+  TabBar _createTabBar(){
+    //only create if the data has been loaded, otherwise return null
 
-    //only create if the data has been loaded
     //create a list of tabs
     List<Tab> tabs = new List();
     for(int i = 0; i < _categories.length; i++){
@@ -71,7 +67,10 @@ class _HomePageState extends State<HomePage> {
       ));
     }
 
-    return tabs;
+    return TabBar(
+      isScrollable: true,
+      tabs: tabs,
+    );
   }
 
   Widget _createBody(){
