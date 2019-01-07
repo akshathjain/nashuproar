@@ -1,0 +1,31 @@
+[
+    {
+        "name":"Morning Announcement",
+        "url":""
+    }, 
+    {
+        "name":"News",
+        "url":"",
+        "is-home": true
+    },
+    {
+        "name":"Opinions",
+        "url":""
+    },
+    {
+        "name":"Features",
+        "url":""
+    },
+    {
+        "name":"Arts & Entertainment",
+        "url":""
+    },
+    {
+        "name":"Sports",
+        "url":""
+    },
+    {
+        "name":"Multimedia",
+        "url":""
+    },
+]
