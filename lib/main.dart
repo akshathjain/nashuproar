@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -34,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new ArticleView(
-      url: "https://nashuproar.org/wp-json/wp/v2/posts/13407",
+      url: "https://nashuproar.org/wp-json/wp/v2/posts/15133?_embed",
     );
   }
 }
@@ -53,14 +55,9 @@ class _ArticleViewState extends State<ArticleView>{
   @override
   void initState() {
     super.initState();
-    print("hello");
-    print(widget.url);
     fetchArticleInfo(widget.url).then((Map m){
       setState(() {
-        print("hello");
-        print(m);
         _info = m;
-        print(m["title"]["rendered"]);
       });
     });
   }
@@ -86,10 +83,22 @@ class _ArticleViewState extends State<ArticleView>{
     //Case: the information has already loaded
     return new ListView(
       children: <Widget>[
-        Text(_info["title"]["rendered"]), //title
+        Html(
+          data: _info["title"]["rendered"],
+        ), //title
         Text(_getDate(DateTime.parse(_info["date"]))), //date
-        Text("Author"), //author
-        Text(_info["content"]["rendered"]), //article content
+        Text(_info["_embedded"]["author"][0]["name"]), //author
+        Html(
+          data: _info["content"]["rendered"],
+          customRender: (node, children){
+            if (node is dom.Element) {
+                switch (node.localName) {
+                  case "iframe":
+                    return Text(node.attributes["src"]);
+                }
+              }
+          },
+        ), //article content
       ],
     );
   }
@@ -112,8 +121,13 @@ class _ArticleViewState extends State<ArticleView>{
     return months[dt.month - 1] + " " + dt.day.toString() + ", " + dt.year.toString(); 
   }
 
+  void _openYoutube(String url) async{
+    if(await canLaunch(url))
+      await launch(url);
+  }
+
   Future<Map> fetchArticleInfo(String url) async{
-    final respone = await http.get(url);
-    return json.decode(respone.body);
+    final postInfo = await http.get(url);
+    return json.decode(postInfo.body);;
   }
 }
