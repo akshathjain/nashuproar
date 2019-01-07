@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new ArticleView(
-      url: "https://nashuproar.org/wp-json/wp/v2/posts/14508?_embed",
+      url: "https://nashuproar.org/wp-json/wp/v2/posts/14684?_embed",
     );
   }
 }
@@ -85,7 +85,7 @@ class _ArticleViewState extends State<ArticleView>{
     return new ListView(
       children: <Widget>[
         CachedNetworkImage(
-          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium_large"]["source_url"],
+          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
         ),
         Html(
           data: _info["title"]["rendered"],
