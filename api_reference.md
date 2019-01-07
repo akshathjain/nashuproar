@@ -23,7 +23,7 @@
 - https://akshathjain.com/nashuproar/categories.json
 - json array
     - name
-    - url
+    - categoryID
 
 ### Search
 - https://nashuproar.org/wp-json/v2/posts?search=query

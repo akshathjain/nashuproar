@@ -8,8 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ArticleView extends StatefulWidget{
-  ArticleView({Key key, this.url}) : super(key: key);
   final String url;
+  
+  ArticleView({Key key, this.url}) : super(key: key);
 
   @override
   _ArticleViewState createState() => _ArticleViewState();

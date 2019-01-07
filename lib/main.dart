@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'ArticleView.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -31,12 +30,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   List _categories;
+  TabController _tabController;
 
   @override
   void initState() {
+    _tabController = _createTabController();
+
     _fetchCategories().then((List l){
       setState(() {
         _categories = l;
+        _tabController = _createTabController();
       });
     });
   }
@@ -49,7 +52,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         bottom: TabBar(
           isScrollable: true,
           tabs: _createTabs(),
-          controller: _createTabController(),
+          controller: _tabController,
         ),
       ),
       body: _createBody(),
@@ -88,11 +91,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     }
 
     //case 2: the data has already loaded, create the tabbar view
+    List<Widget> pages = new List();
+    for(int i = 0; i < _categories.length; i++)
+      pages.add(new Center(child: Text(_categories[i]["url"])));
     
+    return TabBarView(
+      children: pages,
+      controller: _tabController,
+    );
   }
 
   Future<List> _fetchCategories() async{
-    final response = await http.get("https://raw.githubusercontent.com/akshathjain/nashuproar/master/categories.json");
+    final response = await http.get("https://akshathjain.com/nashuproar/categories.json");
     return json.decode(response.body);
   }
 }
