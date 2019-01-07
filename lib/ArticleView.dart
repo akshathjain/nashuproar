@@ -39,6 +39,16 @@ class _ArticleViewState extends State<ArticleView>{
     );
   }
 
+  Widget _getFeaturedImage(){
+    try{
+      return CachedNetworkImage(
+          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
+      );
+    }catch(NoSuchMethodError){
+      return Text("");
+    }
+  }
+
   Widget _createBody(){
     //Case: the information still needs to be loaded
     if(_info == null){
@@ -47,12 +57,11 @@ class _ArticleViewState extends State<ArticleView>{
       );
     }
     
+  
     //Case: the information has already loaded
     return new ListView(
       children: <Widget>[
-        CachedNetworkImage(
-          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
-        ),
+        _getFeaturedImage(),
         Html(
           data: _info["title"]["rendered"],
         ), //title
