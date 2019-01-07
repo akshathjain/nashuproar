@@ -1,6 +1,13 @@
+/*
+Name: Akshath Jain
+Date: 1/7/18
+Purpose: NASH Uproar Android/iOS application
+*/
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'CategoryView.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -92,8 +99,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
     //case 2: the data has already loaded, create the tabbar view
     List<Widget> pages = new List();
-    for(int i = 0; i < _categories.length; i++)
-      pages.add(new Center(child: Text(_categories[i]["url"])));
+    for(int i = 0; i < _categories.length; i++){
+      pages.add(new CategoryView(
+        categoryID: _categories[i]["categoryID"],
+      ));
+    }
     
     return TabBarView(
       children: pages,

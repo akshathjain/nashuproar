@@ -28,7 +28,9 @@ class _CategoryViewState extends State<CategoryView>{
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Center(
+      child: Text(widget.categoryID),
+    );
   }
 
   Future<Map> _fetchCategoryInformation() async {
