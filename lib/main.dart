@@ -29,11 +29,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   List _categories;
 
   @override
-  void initState() {     
+  void initState() {
     _fetchCategories().then((List l){
       setState(() {
         _categories = l;
@@ -43,33 +43,39 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories == null ? 0 : _categories.length,
-      initialIndex: _categories == null ? 0 : _categories.indexWhere((category) => category["is-home"] == true), //set this based on index of homepage in _categories
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("NASH Uproar"),
-          bottom: _createTabBar(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("NASH Uproar"),
+        bottom: TabBar(
+          isScrollable: true,
+          tabs: _createTabs(),
+          controller: _createTabController(),
         ),
-        body: _createBody(),
       ),
+      body: _createBody(),
     );
   }
 
-  TabBar _createTabBar(){
-    //only create if the data has been loaded, otherwise return null
+  List<Tab> _createTabs(){
+    if(_categories == null) //categories hasn't been initialized yet
+      return [];
 
-    //create a list of tabs
+    //create list of tabs
     List<Tab> tabs = new List();
     for(int i = 0; i < _categories.length; i++){
       tabs.add(new Tab(
         text: _categories[i]["name"],
       ));
     }
+    return tabs;
+  }
 
-    return TabBar(
-      isScrollable: true,
-      tabs: tabs,
+  //need to make a custom tab controller b/c default doesn't support variable lengths
+  TabController _createTabController(){
+    return TabController(
+      vsync: this,
+      length: _categories == null ? 0 : _categories.length,
+      initialIndex: _categories == null ? 0 : _categories.indexWhere((category) => category["is-home"] == true), //set this based on index of homepage in _categories
     );
   }
 
