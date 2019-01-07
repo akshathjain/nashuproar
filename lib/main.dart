@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new ArticleView(
-      url: "https://nashuproar.org/wp-json/wp/v2/posts/15133?_embed",
+      url: "https://nashuproar.org/wp-json/wp/v2/posts/14508?_embed",
     );
   }
 }
@@ -83,6 +84,9 @@ class _ArticleViewState extends State<ArticleView>{
     //Case: the information has already loaded
     return new ListView(
       children: <Widget>[
+        CachedNetworkImage(
+          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium_large"]["source_url"],
+        ),
         Html(
           data: _info["title"]["rendered"],
         ), //title
@@ -94,7 +98,25 @@ class _ArticleViewState extends State<ArticleView>{
             if (node is dom.Element) {
                 switch (node.localName) {
                   case "iframe":
-                    return Text(node.attributes["src"]);
+                    return new Container(
+                    width: MediaQuery.of(context).size.width * .75,
+                    child: Card(
+                      child: InkWell(
+                        onTap: () => _openYoutube(node.attributes["src"]),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            CachedNetworkImage(
+                              width: MediaQuery.of(context).size.width * .75,
+                              imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                            Icon(Icons.play_circle_filled, color: Colors.white,),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 }
               }
           },
