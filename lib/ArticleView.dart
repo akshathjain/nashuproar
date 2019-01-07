@@ -6,23 +6,23 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'Utils.dart';
 
 class ArticleView extends StatefulWidget{
-  final String url;
+  final String id;
   
-  ArticleView({Key key, this.url}) : super(key: key);
+  ArticleView({Key key, this.id}) : super(key: key);
 
   @override
   _ArticleViewState createState() => _ArticleViewState();
 }
 
 class _ArticleViewState extends State<ArticleView>{
-  Map _info; //the info about the article
-
+  Map _info; //the info about the articlew
   @override
   void initState() {
     super.initState();
-    fetchArticleInfo(widget.url).then((Map m){
+    fetchArticleInfo().then((Map m){
       setState(() {
         _info = m;
       });
@@ -56,7 +56,7 @@ class _ArticleViewState extends State<ArticleView>{
         Html(
           data: _info["title"]["rendered"],
         ), //title
-        Text(_getDate(DateTime.parse(_info["date"]))), //date
+        Text(getDate(DateTime.parse(_info["date"]))), //date
         Text(_info["_embedded"]["author"][0]["name"]), //author
         Html(
           data: _info["content"]["rendered"],
@@ -91,31 +91,13 @@ class _ArticleViewState extends State<ArticleView>{
     );
   }
 
-  String _getDate(DateTime dt){
-    List months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
-    return months[dt.month - 1] + " " + dt.day.toString() + ", " + dt.year.toString(); 
-  }
-
   void _openYoutube(String url) async{
     if(await canLaunch(url))
       await launch(url);
   }
 
-  Future<Map> fetchArticleInfo(String url) async{
-    final postInfo = await http.get(url);
+  Future<Map> fetchArticleInfo() async{
+    final postInfo = await http.get("https://nashuproar.org/wp-json/wp/v2/posts/" + widget.id + "?_embed");
     return json.decode(postInfo.body);;
   }
 }

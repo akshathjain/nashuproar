@@ -20,10 +20,18 @@
 - name
 
 ### Categories
-- https://akshathjain.com/nashuproar/categories.json
 - json array
     - name
     - categoryID
+- https://akshathjain.com/nashuproar/categories.json (category information)
+    - count
+    - name
+- https://nashuproar.org/wp-json/wp/v2/posts?per_page=25?page=1&categories=category_number (category posts)
+    - JSON Array
+        - Title
+        - Date
+        - id 
+
 
 ### Search
 - https://nashuproar.org/wp-json/v2/posts?search=query
