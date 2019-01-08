@@ -13,13 +13,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 class PostListView extends StatefulWidget{
   List posts;
   final bool enlargeFirstPost;
-  Function onMorePostsNeeded;
+  Function canGetMorePosts;
+  Function onGetMorePosts;
 
   PostListView({
     Key key,
     this.posts,
     this.enlargeFirstPost,
-    this.onMorePostsNeeded,
+    this.canGetMorePosts,
+    this.onGetMorePosts,
   }) : super(key: key);
 
   @override
@@ -40,9 +42,7 @@ class _PostListViewState extends State<PostListView>{
       //itemCount: widget.posts.length,
       itemBuilder: (BuildContext context, int i){
         //need to load more posts
-        if(i >= widget.posts.length)
-          widget.onMorePostsNeeded();
-        else{
+        if(i < widget.posts.length){
           return Card(
             child: InkWell(
               onTap: () => _openPost(context, i),
@@ -65,6 +65,11 @@ class _PostListViewState extends State<PostListView>{
               )
             ),
           );
+        }else if(i == widget.posts.length){
+          if(widget.canGetMorePosts != null && widget.canGetMorePosts()){
+            widget.onGetMorePosts();
+            return Center(child: CircularProgressIndicator(),);
+          }
         }
       },
     );

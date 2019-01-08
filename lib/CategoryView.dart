@@ -20,7 +20,7 @@ class CategoryView extends StatefulWidget{
 
 class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClientMixin{
   int _totalCount;
-  int _fetchedCount;
+  int _fetchedCount = 0;
   int _currentPage = 1;
   int _perpage = 25;
   List _posts;  
@@ -39,11 +39,7 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
       });
 
       _posts = new List();
-      _fetchPosts().then((List l){
-        setSafeState(() {
-            _posts.addAll(l);    
-        });
-      });
+      _getPosts();
   }
 
   //ensures no memory leaks, ensures that setstate not called after view is disposed
@@ -59,10 +55,18 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
     return PostListView(
       posts: _posts,
       enlargeFirstPost: true,
-      onMorePostsNeeded: (){
-        print("here");
-      },
-    ); 
+      canGetMorePosts: () => _fetchedCount < _totalCount,
+      onGetMorePosts: _getPosts,
+    );
+  }
+
+  void _getPosts(){
+    _fetchPosts().then((List l){
+      setSafeState((){
+        _fetchedCount += l.length;
+        _posts.addAll(l);
+      });
+    });
   }
 
   Future<Map> _fetchCategoryInformation() async {
