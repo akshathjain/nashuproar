@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CategoryView.dart';
+import 'SearchView.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -56,6 +57,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     return Scaffold(
       appBar: AppBar(
         title: Text("NASH Uproar"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                builder: (context) => new SearchView()
+              ));
+            },
+          ),
+        ],
         bottom: TabBar(
           isScrollable: true,
           tabs: _createTabs(),
