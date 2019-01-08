@@ -126,5 +126,4 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
     _currentPage++;
     return json.decode(response.body);
   }
-
 }
