@@ -39,19 +39,59 @@ class _PostListViewState extends State<PostListView>{
     }
 
     return ListView.builder(
+      padding: EdgeInsets.all(8.0),
       itemBuilder: (BuildContext context, int i){
         //need to load more posts
         if(i < widget.posts.length && i == 0 && widget.enlargeFirstPost){ //special enlarged first post
           return _cardLarge(i);
         }else if(i < widget.posts.length){ //normal listview post
-          return _cardNormal(i);
+          return Container(
+            padding: EdgeInsets.only(top: 2.0, bottom: 2.0),
+            child: _cardNormal(i)
+          );
         }else if(i == widget.posts.length){ //load more posts indicator
           if(widget.canGetMorePosts != null && widget.canGetMorePosts()){
             widget.onGetMorePosts();
-            return Center(child: CircularProgressIndicator(),);
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CircularProgressIndicator())
+            );
           }
         }
       },
+    );
+  }
+
+  Widget _cardNormal(int i){
+    return Card(
+      child: InkWell(
+        onTap: () => _openPost(context, i),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            _featuredImage(i),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Html(
+                      data: widget.posts[i]["title"]["rendered"],
+                      defaultTextStyle: titleNormalStyle,
+                    ),
+                    Text(
+                      getDate(DateTime.parse(widget.posts[i]["date"])),
+                      style: dateStyle,
+                    ),
+                  ],
+                ),
+              ) 
+            )
+          ],
+        )
+      ),
     );
   }
 
@@ -62,17 +102,20 @@ class _PostListViewState extends State<PostListView>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _getFeaturedImageLarge(i),
-            ConstrainedBox(
+            _featuredImageLarge(i),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
               child: Html(
                 data: widget.posts[i]["title"]["rendered"],
                 defaultTextStyle: titleLargeStyle
               ),
-              constraints: const BoxConstraints(maxWidth: 275.0),
             ),
-            Text(
-              getDate(DateTime.parse(widget.posts[i]["date"])),
-              style: dateStyle
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+              child: Text(
+                getDate(DateTime.parse(widget.posts[i]["date"])),
+                style: dateStyle
+              )
             ),
           ],
         ),
@@ -80,53 +123,21 @@ class _PostListViewState extends State<PostListView>{
     );  
   }
 
-  Widget _cardNormal(int i){
-    return Card(
-      child: InkWell(
-        onTap: () => _openPost(context, i),
-        child: Row(
-          children: <Widget>[
-            _getFeaturedImage(i),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ConstrainedBox(
-                  child: Html(
-                    data: widget.posts[i]["title"]["rendered"],
-                    defaultTextStyle: titleNormalStyle,
-                  ),
-                  constraints: const BoxConstraints(maxWidth: 275.0),
-                ),
-                Text(
-                  getDate(DateTime.parse(widget.posts[i]["date"])),
-                  style: dateStyle,
-                ),
-              ],
-            ),
-          ],
-        )
-      ),
-    );
-  }
-
-  Widget _getFeaturedImage(int index){
+  Widget _featuredImage(int index){
     try{
-        return ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 130.0),
-          child: AspectRatio(
-            aspectRatio: 16.0/9.0,
-            child: CachedNetworkImage(
-              imageUrl: widget.posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
-              fit: BoxFit.cover,
-            ),
-          )
+        return Expanded(
+          flex: 1,
+          child: CachedNetworkImage(
+            imageUrl: widget.posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
+            fit: BoxFit.cover,
+          ),
         );
     }catch(NoSuchMethodError){
       return Container();
     }
   }
 
-  Widget _getFeaturedImageLarge(int index){
+  Widget _featuredImageLarge(int index){
     try{
       return AspectRatio(
         aspectRatio: 16.0/9.0,

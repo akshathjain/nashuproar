@@ -34,7 +34,7 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
 
       _fetchCategoryInformation().then((Map m){
         setSafeState(() {
-            _totalCount = m["count"];
+          _totalCount = m["count"];
         });
       });
 
