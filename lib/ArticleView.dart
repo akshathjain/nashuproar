@@ -78,33 +78,19 @@ class _ArticleViewState extends State<ArticleView>{
           padding: EdgeInsets.only(left: pads, right: pads),
           child: Html(
             data: _info["content"]["rendered"],
+            defaultTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 15.0
+            ),
             customRender: (node, children){
               if (node is dom.Element) {
                 switch (node.localName) {
                   case "iframe":
-                    return new Container(
-                      width: MediaQuery.of(context).size.width * .75,
-                      child: Card(
-                        child: InkWell(
-                          onTap: () => _openYoutube(node.attributes["src"]),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              CachedNetworkImage(
-                                width: MediaQuery.of(context).size.width * .75,
-                                imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                              Icon(Icons.play_circle_filled, color: Colors.white,),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    _iframe(node);
                 }
-            }
-          },
-        ), //article content
+              }
+            },
+          ), //article content
         ),
       ],
     );
@@ -122,6 +108,28 @@ class _ArticleViewState extends State<ArticleView>{
     }catch(NoSuchMethodError){
       return Text("");
     }
+  }
+
+  Widget _iframe(var node){
+    return new Container(
+      width: MediaQuery.of(context).size.width * .75,
+      child: Card(
+        child: InkWell(
+          onTap: () => _openYoutube(node.attributes["src"]),
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              CachedNetworkImage(
+                width: MediaQuery.of(context).size.width * .75,
+                imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
+                fit: BoxFit.cover,
+              ),
+              Icon(Icons.play_circle_filled, color: Colors.white,),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _openYoutube(String url) async{
