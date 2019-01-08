@@ -13,7 +13,7 @@ TextStyle titleNormalStyle = new TextStyle(
 );
 
 TextStyle dateStyle = new TextStyle(
-  fontSize: 16.0,
+  fontSize: 15.5,
   color: Colors.black87,
   fontWeight: FontWeight.normal,
 );
