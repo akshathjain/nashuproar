@@ -42,47 +42,9 @@ class _PostListViewState extends State<PostListView>{
       itemBuilder: (BuildContext context, int i){
         //need to load more posts
         if(i < widget.posts.length && i == 0 && widget.enlargeFirstPost){ //special enlarged first post
-          return Card(
-            child: InkWell(
-              onTap: () => _openPost(context, i),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _getFeaturedImageLarge(i),
-                  ConstrainedBox(
-                    child: Html(
-                      data: widget.posts[i]["title"]["rendered"],
-                    ),
-                    constraints: const BoxConstraints(maxWidth: 275.0),
-                  ),
-                  Text(getDate(DateTime.parse(widget.posts[i]["date"]))),
-                ],
-              ),
-            ),
-          );
+          return _cardLarge(i);
         }else if(i < widget.posts.length){ //normal listview post
-          return Card(
-            child: InkWell(
-              onTap: () => _openPost(context, i),
-              child: Row(
-                children: <Widget>[
-                  _getFeaturedImage(i),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ConstrainedBox(
-                        child: Html(
-                          data: widget.posts[i]["title"]["rendered"],
-                        ),
-                        constraints: const BoxConstraints(maxWidth: 275.0),
-                      ),
-                      Text(getDate(DateTime.parse(widget.posts[i]["date"]))),
-                    ],
-                  ),
-                ],
-              )
-            ),
-          );
+          return _cardNormal(i);
         }else if(i == widget.posts.length){ //load more posts indicator
           if(widget.canGetMorePosts != null && widget.canGetMorePosts()){
             widget.onGetMorePosts();
@@ -90,6 +52,60 @@ class _PostListViewState extends State<PostListView>{
           }
         }
       },
+    );
+  }
+
+  Widget _cardLarge(int i){
+    return Card(
+      child: InkWell(
+        onTap: () => _openPost(context, i),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _getFeaturedImageLarge(i),
+            ConstrainedBox(
+              child: Html(
+                data: widget.posts[i]["title"]["rendered"],
+                defaultTextStyle: titleLargeStyle
+              ),
+              constraints: const BoxConstraints(maxWidth: 275.0),
+            ),
+            Text(
+              getDate(DateTime.parse(widget.posts[i]["date"])),
+              style: dateStyle
+            ),
+          ],
+        ),
+      ),
+    );  
+  }
+
+  Widget _cardNormal(int i){
+    return Card(
+      child: InkWell(
+        onTap: () => _openPost(context, i),
+        child: Row(
+          children: <Widget>[
+            _getFeaturedImage(i),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ConstrainedBox(
+                  child: Html(
+                    data: widget.posts[i]["title"]["rendered"],
+                    defaultTextStyle: titleNormalStyle,
+                  ),
+                  constraints: const BoxConstraints(maxWidth: 275.0),
+                ),
+                Text(
+                  getDate(DateTime.parse(widget.posts[i]["date"])),
+                  style: dateStyle,
+                ),
+              ],
+            ),
+          ],
+        )
+      ),
     );
   }
 
