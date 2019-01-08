@@ -19,7 +19,8 @@ class SearchView extends StatefulWidget{
 
 class _SearchView extends State<SearchView>{
   List _posts = new List();
-  int _totalPages;
+  int _totalCount = 0;
+  int _fetchedCount = 0;
   int _page = 1;
   int _perpage = 25;
   bool _noResults = false;
@@ -53,7 +54,7 @@ class _SearchView extends State<SearchView>{
             _searchTerm = term;
             _posts = new List();
             _noResults = false;
-            _getMovies(term);
+            _getPosts();
           }
         ),
         actions: <Widget>[
@@ -64,39 +65,25 @@ class _SearchView extends State<SearchView>{
     );
   }
 
-  void _getMovies(String term){
-    if(term != null || term != ""){
-      fetchPosts(term).then((List l){
+  void _getPosts(){
+    if(_searchTerm != null || _searchTerm != ""){
+      fetchPosts().then((List data){
         if(mounted){
-          setState((){
-            _posts = l;
-            // _totalPages = map['total_pages'];
-            // List data = map['results'];
-            
-            // if(data != null && data.isNotEmpty){
-            //   if(_movieData != null)
-            //     _movieData.addAll(data);
-            //   else
-            //     _movieData = data;
-            // }else{
-            //   _noResults = true;
-            // }
+          setState((){            
+            if(data != null && data.isNotEmpty){
+              if(_posts != null)
+                _posts.addAll(data);
+              else
+                _posts = data;
+
+              _fetchedCount += data.length;
+            }else{
+              _noResults = true;
+            }
           });
         }
       });
     }    
-  }
-
-  Widget _createListView(){
-    if(_posts == null)
-      return new Container();
-    else if(_posts.isEmpty)
-      return new Center(child: Text('No results'),);
-
-    return PostListView(
-      posts: _posts,
-      enlargeFirstPost: false,
-    );
   }
 
   Widget _createBody(){
@@ -104,12 +91,26 @@ class _SearchView extends State<SearchView>{
       return Center(child: Text('Search for an article'),);
 
     if(_noResults)
-      return Center(child: Text('No movies found',));
+      return Center(child: Text('No articles found',));
 
     if(_posts != null && _posts.isNotEmpty)
       return _createListView();
     else
       return Center(child: CircularProgressIndicator(),);    
+  }
+
+  Widget _createListView(){
+    if(_posts == null)
+      return new Container();
+    else if(_posts.isEmpty)
+      return new Center(child: Text('No articles found'),);
+
+    return PostListView(
+      posts: _posts,
+      enlargeFirstPost: false,
+      canGetMorePosts: () => _fetchedCount < _totalCount,
+      onGetMorePosts: _getPosts,
+    );
   }
 
   Widget _showClearSearch(){
@@ -127,10 +128,10 @@ class _SearchView extends State<SearchView>{
   }
 
   //get the search stuff
-  Future<List> fetchPosts(String searchTerm) async{
-    final response = await http.get("https://nashuproar.org/wp-json/wp/v2/posts?search=" + searchTerm + "&page=" + _page.toString() + "&_embed&per_page=" + _perpage.toString());
+  Future<List> fetchPosts() async{
+    final response = await http.get("https://nashuproar.org/wp-json/wp/v2/posts?search=" + _searchTerm + "&page=" + _page.toString() + "&_embed&categories_exclude=92&per_page=" + _perpage.toString()); //exclude morning announcements from search
+    _totalCount = int.tryParse(response.headers["x-wp-total"]); //get the total number of posts
     _page++;
-    print(json.decode(response.body));
     return json.decode(response.body);
   }
 }
