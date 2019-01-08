@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'Utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'ArticleView.dart';
+import 'PostListView.dart';
 
 class SearchView extends StatefulWidget{
   SearchView({Key key}) : super(key: key);
@@ -96,65 +93,9 @@ class _SearchView extends State<SearchView>{
     else if(_posts.isEmpty)
       return new Center(child: Text('No results'),);
 
-    return ListView.builder(
-      itemCount: _posts.length,
-      itemBuilder: (BuildContext context, int i){
-        return Card(
-          child: InkWell(
-            onTap: () => _openPost(context, i),
-            child: Row(
-              children: <Widget>[
-                _getFeaturedImage(i),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ConstrainedBox(
-                      child: Html(
-                        data: _posts[i]["title"]["rendered"],
-                      ),
-                      constraints: const BoxConstraints(maxWidth: 275.0),
-                    ),
-                    Text(getDate(DateTime.parse(_posts[i]["date"]))),
-                  ],
-                ),
-              ],
-            )
-          ),
-        );
-      },
-    );
-
-    // return new ListView.builder(
-    //   itemBuilder: (BuildContext context, int i){
-    //     if(i < (_movieData.length + 2) ~/ 3){
-    //       return buildMovieRow(context, _movieData, i, 'search-row-' + i.toString());
-    //     }else{
-    //       if(_page <= _totalPages)
-    //         _getMovies(_searchTerm);
-    //     }
-    //   },
-    // );
-  }
-
-  Widget _getFeaturedImage(int index){
-    try{
-      return CachedNetworkImage(
-          imageUrl: _posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["thumbnail"]["source_url"],
-      );
-    }catch(NoSuchMethodError){
-      return Text("");
-    }
-  }
-
-  void _openPost(BuildContext context, int index){
-    Navigator.of(context).push(
-      new MaterialPageRoute(
-        builder: (context){
-          return new ArticleView(
-            id: _posts[index]["id"].toString(),
-          );
-        }
-      ),
+    return PostListView(
+      posts: _posts,
+      enlargeFirstPost: false,
     );
   }
 

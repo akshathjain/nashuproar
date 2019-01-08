@@ -5,12 +5,9 @@ Purpose: category view to display news stories, generic class
 */
 
 import 'package:flutter/material.dart';
-import 'ArticleView.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_html/flutter_html.dart';
-import 'Utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'PostListView.dart';
 
 class CategoryView extends StatefulWidget{
   final String categoryID;
@@ -29,7 +26,7 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
   List _posts;  
 
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -58,62 +55,14 @@ class _CategoryViewState extends State<CategoryView> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    //case: still fetching posts
-    if(_posts == null || _posts.isEmpty){
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: _posts.length,
-      itemBuilder: (BuildContext context, int i){
-        return Card(
-          child: InkWell(
-            onTap: () => _openPost(context, i),
-            child: Row(
-              children: <Widget>[
-                _getFeaturedImage(i),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ConstrainedBox(
-                      child: Html(
-                        data: _posts[i]["title"]["rendered"],
-                      ),
-                      constraints: const BoxConstraints(maxWidth: 275.0),
-                    ),
-                    Text(getDate(DateTime.parse(_posts[i]["date"]))),
-                  ],
-                ),
-              ],
-            )
-          ),
-        );
+   
+    return PostListView(
+      posts: _posts,
+      enlargeFirstPost: true,
+      onMorePostsNeeded: (){
+        print("here");
       },
-    );
-  }
-
-  Widget _getFeaturedImage(int index){
-    try{
-      return CachedNetworkImage(
-          imageUrl: _posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["thumbnail"]["source_url"],
-      );
-    }catch(NoSuchMethodError){
-      return Text("");
-    }
-  }
-
-  void _openPost(BuildContext context, int index){
-    Navigator.of(context).push(
-      new MaterialPageRoute(
-        builder: (context){
-          return new ArticleView(
-            id: _posts[index]["id"].toString(),
-          );
-        }
-      ),
-    );
+    ); 
   }
 
   Future<Map> _fetchCategoryInformation() async {
