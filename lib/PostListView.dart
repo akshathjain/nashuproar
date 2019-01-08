@@ -12,7 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class PostListView extends StatefulWidget{
   List posts;
-  final bool enlargeFirstPost;
+  bool enlargeFirstPost = false;
   Function canGetMorePosts;
   Function onGetMorePosts;
 
@@ -39,10 +39,28 @@ class _PostListViewState extends State<PostListView>{
     }
 
     return ListView.builder(
-      //itemCount: widget.posts.length,
       itemBuilder: (BuildContext context, int i){
         //need to load more posts
-        if(i < widget.posts.length){
+        if(i < widget.posts.length && i == 0 && widget.enlargeFirstPost){ //special enlarged first post
+          return Card(
+            child: InkWell(
+              onTap: () => _openPost(context, i),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _getFeaturedImageLarge(i),
+                  ConstrainedBox(
+                    child: Html(
+                      data: widget.posts[i]["title"]["rendered"],
+                    ),
+                    constraints: const BoxConstraints(maxWidth: 275.0),
+                  ),
+                  Text(getDate(DateTime.parse(widget.posts[i]["date"]))),
+                ],
+              ),
+            ),
+          );
+        }else if(i < widget.posts.length){ //normal listview post
           return Card(
             child: InkWell(
               onTap: () => _openPost(context, i),
@@ -65,7 +83,7 @@ class _PostListViewState extends State<PostListView>{
               )
             ),
           );
-        }else if(i == widget.posts.length){
+        }else if(i == widget.posts.length){ //load more posts indicator
           if(widget.canGetMorePosts != null && widget.canGetMorePosts()){
             widget.onGetMorePosts();
             return Center(child: CircularProgressIndicator(),);
@@ -75,14 +93,34 @@ class _PostListViewState extends State<PostListView>{
     );
   }
 
-
   Widget _getFeaturedImage(int index){
     try{
-      return CachedNetworkImage(
-          imageUrl: widget.posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["thumbnail"]["source_url"],
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 130.0),
+          child: AspectRatio(
+            aspectRatio: 16.0/9.0,
+            child: CachedNetworkImage(
+              imageUrl: widget.posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
+              fit: BoxFit.cover,
+            ),
+          )
+        );
+    }catch(NoSuchMethodError){
+      return Container();
+    }
+  }
+
+  Widget _getFeaturedImageLarge(int index){
+    try{
+      return AspectRatio(
+        aspectRatio: 16.0/9.0,
+        child: CachedNetworkImage(
+          imageUrl: widget.posts[index]["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["large"]["source_url"],
+          fit: BoxFit.cover,
+        ),
       );
     }catch(NoSuchMethodError){
-      return Text("");
+      return Container();
     }
   }
 
