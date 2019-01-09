@@ -1,3 +1,9 @@
+/*
+Name: Akshath Jain
+Date: 1/8/18
+Purpose: view an individual post/article
+*/
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -6,6 +12,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:share/share.dart';
 import 'Utils.dart';
 
 class ArticleView extends StatefulWidget{
@@ -34,6 +41,14 @@ class _ArticleViewState extends State<ArticleView>{
     return new Scaffold(
       appBar: new AppBar(
         title: Text("Back"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () => Share.share(_info == null ? "" : _info["link"]),
+            splashColor: Colors.black26,
+            highlightColor: Colors.black12,
+          ),
+        ],
       ),
       body: _createBody(),
     );

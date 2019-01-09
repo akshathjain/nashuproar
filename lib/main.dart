@@ -60,6 +60,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
+            splashColor: Colors.black26,
+            highlightColor: Colors.black12,
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
                 builder: (context) => new SearchView()
