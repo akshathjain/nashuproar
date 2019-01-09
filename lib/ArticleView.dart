@@ -48,6 +48,12 @@ class _ArticleViewState extends State<ArticleView>{
             splashColor: Colors.black26,
             highlightColor: Colors.black12,
           ),
+          IconButton(
+            icon: Icon(Icons.open_in_browser),
+            onPressed: () => _launchLink(_info == null ? "" : _info["link"]),
+            splashColor: Colors.black26,
+            highlightColor: Colors.black12,
+          ),
         ],
       ),
       body: _createBody(),
