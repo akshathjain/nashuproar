@@ -39,41 +39,47 @@ class _ArticleViewState extends State<ArticleView>{
   @override
   Widget build(BuildContext context){
     return new Scaffold(
-      appBar: new AppBar(
-        title: Text("Back"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () => Share.share(_info == null ? "" : _info["link"]),
-            splashColor: Colors.black26,
-            highlightColor: Colors.black12,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            title: Text("Back"),
+            forceElevated: true,
+            floating: true,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.share),
+                onPressed: () => Share.share(_info == null ? "" : _info["link"]),
+                splashColor: Colors.black26,
+                highlightColor: Colors.black12,
+              ),
+              IconButton(
+                icon: Icon(Icons.open_in_browser),
+                onPressed: () => _launchLink(_info == null ? "" : _info["link"]),
+                splashColor: Colors.black26,
+                highlightColor: Colors.black12,
+              ),
+            ],
           ),
-          IconButton(
-            icon: Icon(Icons.open_in_browser),
-            onPressed: () => _launchLink(_info == null ? "" : _info["link"]),
-            splashColor: Colors.black26,
-            highlightColor: Colors.black12,
-          ),
+          _createBody(),
         ],
       ),
-      body: _createBody(),
     );
   }
 
+  //the retracting toolbar requires sliver list => requires that body is List<Widget>
+  //therefore, need to do some strange return processing stuff
   Widget _createBody(){
     //Case: the information still needs to be loaded
     if(_info == null){
-      return new Center(
-        child: CircularProgressIndicator(),
-      );
+      return SliverFillRemaining(child: Center(child: CircularProgressIndicator()),);
     }
     
     double pads = 20.0;
 
     //Case: the information has already loaded
-    return new ListView(
-      children: <Widget>[
-        _getFeaturedImage(),
+    return SliverList(
+      delegate: SliverChildListDelegate([
+         _getFeaturedImage(),
         Padding(
           padding: EdgeInsets.fromLTRB(pads, 16.0, pads, 6.0),
           child:  Html(
@@ -113,7 +119,7 @@ class _ArticleViewState extends State<ArticleView>{
             }
           },
         ), //article content
-      ],
+      ]),
     );
   }
 
