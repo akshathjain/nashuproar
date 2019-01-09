@@ -116,6 +116,9 @@ class _ArticleViewState extends State<ArticleView>{
                 case "iframe":
                   return _iframe(node);
                   break;
+                case "script":
+                  return _gallery(node.innerHtml);
+                  break;
               }
             }
           },
@@ -166,6 +169,12 @@ class _ArticleViewState extends State<ArticleView>{
     );
   }
 
+  Widget _gallery(String source){
+    List split = source.split(" ");
+    List ids = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
+    ids.forEach((i) => i = int.tryParse(i)); //convert to int
+  }
+  
   void _launchLink(String url) async{
     if(await canLaunch(url))
       await launch(url);
