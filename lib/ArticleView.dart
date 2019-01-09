@@ -74,26 +74,24 @@ class _ArticleViewState extends State<ArticleView>{
             style: dateStyle,
           ),
         ),
-        Padding(
+        Html(
           padding: EdgeInsets.only(left: pads, right: pads),
-          child: Html(
-            data: _info["content"]["rendered"],
-            defaultTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 15.0
-            ),
-            onLinkTap: (url) => _launchLink(url),
-            customRender: (node, children){
-              if (node is dom.Element) {
-                switch (node.localName) {
-                  case "iframe":
-                    return _iframe(node);
-                    break;
-                }
+          data: _info["content"]["rendered"],
+          defaultTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 15.0
+          ),
+          onLinkTap: (url) => _launchLink(url),
+          customRender: (node, children){
+            if (node is dom.Element) {
+              switch (node.localName) {
+                case "iframe":
+                  return _iframe(node);
+                  break;
               }
-            },
-          ), //article content
-        ),
+            }
+          },
+        ), //article content
       ],
     );
   }
