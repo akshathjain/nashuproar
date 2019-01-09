@@ -145,7 +145,6 @@ class _ArticleViewState extends State<ArticleView>{
 
   Future<Map> fetchArticleInfo() async{
     final postInfo = await http.get("https://nashuproar.org/wp-json/wp/v2/posts/" + widget.id + "?_embed");
-    print(postInfo.headers);
     return json.decode(postInfo.body);;
   }
 }
