@@ -26,6 +26,7 @@ class ArticleView extends StatefulWidget{
 
 class _ArticleViewState extends State<ArticleView>{
   Map _info; //the info about the articlew
+  
   @override
   void initState() {
     super.initState();
