@@ -12,6 +12,12 @@ TextStyle titleNormalStyle = new TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+TextStyle authorStyle = new TextStyle(
+  fontSize: 16.0,
+  color: Colors.black,
+  fontWeight: FontWeight.w600
+);
+
 TextStyle dateStyle = new TextStyle(
   fontSize: 15.5,
   color: Colors.black87,

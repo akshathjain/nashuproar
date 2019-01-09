@@ -54,17 +54,17 @@ class _ArticleViewState extends State<ArticleView>{
       children: <Widget>[
         _getFeaturedImage(),
         Padding(
-          padding: EdgeInsets.only(left: pads, right: pads, top: 16.0),
+          padding: EdgeInsets.fromLTRB(pads, 16.0, pads, 6.0),
           child:  Html(
             data: _info["title"]["rendered"],
             defaultTextStyle: titleLargeStyle,
           ), //title
         ),
         Padding(
-          padding: EdgeInsets.only(left: pads, right: pads),
+          padding: EdgeInsets.fromLTRB(pads, 0.0, pads, 2.0),
           child: Text(
             _info["_embedded"]["author"][0]["name"],
-            style: titleNormalStyle,
+            style: authorStyle,
           ), //author
         ),
         Padding(
@@ -82,11 +82,13 @@ class _ArticleViewState extends State<ArticleView>{
               color: Colors.black,
               fontSize: 15.0
             ),
+            onLinkTap: (url) => _launchLink(url),
             customRender: (node, children){
               if (node is dom.Element) {
                 switch (node.localName) {
                   case "iframe":
-                    _iframe(node);
+                    return _iframe(node);
+                    break;
                 }
               }
             },
@@ -111,28 +113,34 @@ class _ArticleViewState extends State<ArticleView>{
   }
 
   Widget _iframe(var node){
-    return new Container(
-      width: MediaQuery.of(context).size.width * .75,
-      child: Card(
-        child: InkWell(
-          onTap: () => _openYoutube(node.attributes["src"]),
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              CachedNetworkImage(
-                width: MediaQuery.of(context).size.width * .75,
-                imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
-                fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 15.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[ 
+          Card(
+            child: InkWell(
+              onTap: () => _launchLink(node.attributes["src"]),
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CachedNetworkImage(
+                    height: 180.0,
+                    imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
+                    fit: BoxFit.cover,
+                  ),
+                  Icon(Icons.play_circle_filled, color: Colors.white,),
+                ],
               ),
-              Icon(Icons.play_circle_filled, color: Colors.white,),
-            ],
+            ),
           ),
-        ),
-      ),
+        ]
+      )
     );
   }
 
-  void _openYoutube(String url) async{
+  void _launchLink(String url) async{
     if(await canLaunch(url))
       await launch(url);
   }
