@@ -15,6 +15,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:share/share.dart';
 import 'Utils.dart';
 import 'Gallery.dart';
+import 'Colors.dart';
 
 class ArticleView extends StatefulWidget{
   final String id;
@@ -198,9 +199,7 @@ class _ArticleViewState extends State<ArticleView>{
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[RaisedButton(
           onPressed: () => _launchLink(_info["link"]),
-          color: Theme.of(context).accentColor,
-          splashColor: Theme.of(context).splashColor,
-          textColor: Theme.of(context).textSelectionColor,
+          color: ACCENT_COLOR,
           child: Text("Listen to Podcast"),
         )],
       )

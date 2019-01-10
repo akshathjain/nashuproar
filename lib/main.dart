@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CategoryView.dart';
 import 'SearchView.dart';
+import 'Colors.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -20,10 +21,11 @@ class NASHUproar extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'NASH Uproar',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
-        primaryColor: Colors.yellow.shade600,
-        primaryColorDark: Colors.yellow.shade800,
-        accentColor: Colors.black,
+        primaryColor: PRIMARY_COLOR,
+        primaryColorLight: PRIMARY_COLOR_LIGHT,
+        primaryColorDark: PRIMARY_COLOR_DARK,
+        accentColor: ACCENT_COLOR,
+        brightness: Brightness.light
       ),
       home: HomePage(),
     );
