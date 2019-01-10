@@ -29,6 +29,7 @@ class _ArticleViewState extends State<ArticleView>{
   Map _info; //the info about the articlew
   bool _hasGallery = false;
   List _galleryIds;
+  static const int PODCAST_CATEGORY = 137;
 
   @override
   void initState() {
@@ -113,6 +114,7 @@ class _ArticleViewState extends State<ArticleView>{
             style: dateStyle,
           ),
         ),
+        _getPodcast(),
         Html(
           padding: EdgeInsets.only(left: pads, right: pads),
           data: _info["content"]["rendered"],
@@ -183,6 +185,26 @@ class _ArticleViewState extends State<ArticleView>{
     }catch(NoSuchMethodError){
       return Text("");
     }
+  }
+
+  //determines if article is podcast, if is, return link to listen
+  Widget _getPodcast(){
+    if(!_info.containsKey("categories") || !_info["categories"].contains(PODCAST_CATEGORY))
+      return Container();
+    
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[RaisedButton(
+          onPressed: () => _launchLink(_info["link"]),
+          color: Theme.of(context).accentColor,
+          splashColor: Theme.of(context).splashColor,
+          textColor: Theme.of(context).textSelectionColor,
+          child: Text("Listen to Podcast"),
+        )],
+      )
+    );
   }
 
   Widget _getYouTubeVideo(var node){

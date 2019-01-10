@@ -22,8 +22,8 @@ class NASHUproar extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         primaryColor: Colors.yellow.shade600,
-        primaryColorDark: Colors.yellow.shade900,
-        accentColor: Colors.black
+        primaryColorDark: Colors.yellow.shade800,
+        accentColor: Colors.black,
       ),
       home: HomePage(),
     );
