@@ -56,8 +56,6 @@ class _ComplexNetworkImageState extends State<_ComplexNetworkImage> with Automat
       if(mounted){
         setState(() {
           this._info = m;
-          print(widget.id);
-          print(_info);
         });
       }
     });

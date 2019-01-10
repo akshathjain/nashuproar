@@ -128,14 +128,29 @@ class _ArticleViewState extends State<ArticleView>{
                   return _iframe(node);
                   break;
                 case "img":
-                  if(!_hasGallery)
-                    return CachedNetworkImage(imageUrl: node.attributes["src"],);
-                  // return Gallery(
-                  //   ids: _galleryIds;
-                  // );
+                  if(_hasGallery && node.attributes["class"].contains("slideshow")) //remove first slideshow image from body
+                    return Container();
                   break;
-                case "script":
-                  //print(node.innerHtml);
+                case "div":
+                  if(node.attributes.containsKey("class") && node.attributes["class"].contains("slideshow")){ //remove annoying gallery sticker, replace with instructions to view gallery
+                    return 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[ Container(
+                        margin: const EdgeInsets.fromLTRB(0.0, 2.0, 2.0, 20.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2.5
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Text("Swipe through Images to View Gallery", style: TextStyle(fontWeight: FontWeight.bold),),
+                      )
+                    ]);
+                  }
+                  break;
               }
             }
           },
