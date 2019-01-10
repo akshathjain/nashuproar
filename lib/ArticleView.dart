@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:share/share.dart';
 import 'Utils.dart';
+import 'Gallery.dart';
 
 class ArticleView extends StatefulWidget{
   final String id;
@@ -41,7 +42,8 @@ class _ArticleViewState extends State<ArticleView>{
         if(split.indexOf("photoids") != -1){
           _hasGallery = true;
           _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
-          _galleryIds.forEach((i) => i = int.tryParse(i)); //convert to int
+          for(int i = 0; i < _galleryIds.length; i++) //get rid of all extraneous stuff
+            _galleryIds[i] = _galleryIds[i].toString().replaceAll(RegExp("[^0-9]"), "");
         }
       });
     });
@@ -100,7 +102,7 @@ class _ArticleViewState extends State<ArticleView>{
         Padding(
           padding: EdgeInsets.fromLTRB(pads, 0.0, pads, 2.0),
           child: Text(
-            _info["_embedded"]["author"][0]["name"],
+            _info["_embedded"]["author"][0]["name"] == "adviser" ? "Unknown Author" : _info["_embedded"]["author"][0]["name"],
             style: authorStyle,
           ), //author
         ),
@@ -185,7 +187,12 @@ class _ArticleViewState extends State<ArticleView>{
   }
 
   Widget _getGallery(){
-    return Container();
+    return AspectRatio(
+      aspectRatio: 16.0 / 9.0,
+      child: Gallery(
+        ids: _galleryIds,
+      )
+    );
   }
 
   void _launchLink(String url) async{
