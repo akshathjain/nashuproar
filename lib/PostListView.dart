@@ -79,11 +79,11 @@ class _PostListViewState extends State<PostListView>{
                   children: <Widget>[
                     Html(
                       data: widget.posts[i]["title"]["rendered"],
-                      defaultTextStyle: titleNormalStyle,
+                      defaultTextStyle: getTitleNormalStyle(context),
                     ),
                     Text(
                       getDate(DateTime.parse(widget.posts[i]["date"])),
-                      style: dateStyle,
+                      style: getDateStyle(context),
                     ),
                   ],
                 ),
@@ -107,14 +107,14 @@ class _PostListViewState extends State<PostListView>{
               padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
               child: Html(
                 data: widget.posts[i]["title"]["rendered"],
-                defaultTextStyle: titleLargeStyle
+                defaultTextStyle: getTitleLargeStyle(context)
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
               child: Text(
                 getDate(DateTime.parse(widget.posts[i]["date"])),
-                style: dateStyle
+                style: getDateStyle(context)
               )
             ),
           ],

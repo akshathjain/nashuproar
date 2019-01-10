@@ -94,25 +94,25 @@ class _ArticleViewState extends State<ArticleView>{
     return SliverList(
       delegate: SliverChildListDelegate([
         _hasGallery ? _getGallery() : _getFeaturedImage(),
-        Padding(
+        Padding( //title
           padding: EdgeInsets.fromLTRB(pads, 16.0, pads, 6.0),
           child:  Html(
             data: _info["title"]["rendered"],
-            defaultTextStyle: titleLargeStyle,
+            defaultTextStyle: getTitleLargeStyle(context),
           ), //title
         ),
-        Padding(
+        Padding( //author
           padding: EdgeInsets.fromLTRB(pads, 0.0, pads, 2.0),
           child: Text(
             _info["_embedded"]["author"][0]["name"] == "adviser" ? "Unknown Author" : _info["_embedded"]["author"][0]["name"],
-            style: authorStyle,
+            style: getAuthorStyle(context),
           ), //author
         ),
-        Padding(
+        Padding( //date
           padding: EdgeInsets.only(left: pads, right: pads, bottom: 20.0),
           child: Text(
             getDate(DateTime.parse(_info["date"])), //date
-            style: dateStyle,
+            style: getDateStyle(context),
           ),
         ),
         _getPodcast(),
@@ -120,7 +120,7 @@ class _ArticleViewState extends State<ArticleView>{
           padding: EdgeInsets.only(left: pads, right: pads),
           data: _info["content"]["rendered"],
           defaultTextStyle: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? TEXT_ON_DARK : TEXT_ON_LIGHT,
             fontSize: 15.0
           ),
           customRender: (node, children){
@@ -147,20 +147,19 @@ class _ArticleViewState extends State<ArticleView>{
                   break;
                 case "div":
                   if(node.attributes.containsKey("class") && node.attributes["class"].contains("slideshow")){ //remove annoying gallery sticker, replace with instructions to view gallery
-                    return 
-                    Row(
+                    return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[ Container(
                         margin: const EdgeInsets.fromLTRB(0.0, 2.0, 2.0, 20.0),
                         padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: ACCENT_COLOR,
                             width: 2.5
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        child: Text("Swipe through Images to View Gallery", style: TextStyle(fontWeight: FontWeight.bold),),
+                        child: Text("Swipe through Images to View Gallery", style: TextStyle(fontWeight: FontWeight.w600),),
                       )
                     ]);
                   }

@@ -21,11 +21,11 @@ class NASHUproar extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'NASH Uproar',
       theme: ThemeData(
-        primaryColor: PRIMARY_COLOR,
-        primaryColorLight: PRIMARY_COLOR_LIGHT,
-        primaryColorDark: PRIMARY_COLOR_DARK,
+        primaryColor: PRIMARY_COLOR_DARK,
+        primaryColorLight: PRIMARY_COLOR_DARK_LIGHTER,
+        primaryColorDark: PRIMARY_COLOR_DARK_DARKER,
         accentColor: ACCENT_COLOR,
-        brightness: Brightness.light
+        brightness: Brightness.light,
       ),
       home: HomePage(),
     );
