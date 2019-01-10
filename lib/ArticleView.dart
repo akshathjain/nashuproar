@@ -26,13 +26,18 @@ class ArticleView extends StatefulWidget{
 
 class _ArticleViewState extends State<ArticleView>{
   Map _info; //the info about the articlew
-  
+  bool _hasGallery = false;
+  List _galleryIds;
+
   @override
   void initState() {
     super.initState();
     fetchArticleInfo().then((Map m){
       setState(() {
         _info = m;
+
+        //determines if article has a gallery
+        _determineHasGallery();
       });
     });
   }
@@ -80,7 +85,7 @@ class _ArticleViewState extends State<ArticleView>{
     //Case: the information has already loaded
     return SliverList(
       delegate: SliverChildListDelegate([
-         _getFeaturedImage(),
+        _hasGallery ? _getGallery() : _getFeaturedImage(),
         Padding(
           padding: EdgeInsets.fromLTRB(pads, 16.0, pads, 6.0),
           child:  Html(
@@ -96,7 +101,7 @@ class _ArticleViewState extends State<ArticleView>{
           ), //author
         ),
         Padding(
-          padding: EdgeInsets.only(left: pads, right: pads),
+          padding: EdgeInsets.only(left: pads, right: pads, bottom: 20.0),
           child: Text(
             getDate(DateTime.parse(_info["date"])), //date
             style: dateStyle,
@@ -117,7 +122,7 @@ class _ArticleViewState extends State<ArticleView>{
                   return _iframe(node);
                   break;
                 case "script":
-                  return _gallery(node.innerHtml);
+                  //_parseScriptForGalleryInfo(node.innerHtml);
                   break;
               }
             }
@@ -131,7 +136,7 @@ class _ArticleViewState extends State<ArticleView>{
     try{
       return AspectRatio(
         aspectRatio: 16.0/10.0,
-        child:CachedNetworkImage(
+        child: CachedNetworkImage(
           imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
           fit: BoxFit.cover,
         )
@@ -168,13 +173,28 @@ class _ArticleViewState extends State<ArticleView>{
       )
     );
   }
-
-  Widget _gallery(String source){
-    List split = source.split(" ");
-    List ids = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
-    ids.forEach((i) => i = int.tryParse(i)); //convert to int
-  }
   
+  void _determineHasGallery(){
+    Html(
+      data: _info["content"]["rendered"],
+      customRender: (node, children){
+        if(node is dom.Element){
+          if(node.localName == "script"){
+            List split = node.innerHtml.split(" ");
+            _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
+            _galleryIds.forEach((i) => i = int.tryParse(i)); //convert to int
+            _hasGallery = true;
+            return;
+          }
+        }
+      },
+    );
+  }
+
+  Widget _getGallery(){
+    return Container();
+  }
+
   void _launchLink(String url) async{
     if(await canLaunch(url))
       await launch(url);
