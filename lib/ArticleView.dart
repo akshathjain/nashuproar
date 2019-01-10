@@ -120,16 +120,27 @@ class _ArticleViewState extends State<ArticleView>{
             color: Colors.black,
             fontSize: 15.0
           ),
-          onLinkTap: (url) => _launchLink(url),
           customRender: (node, children){
             if (node is dom.Element) {
               switch (node.localName) {
                 case "iframe":
-                  return _iframe(node);
+                  return _getYouTubeVideo(node);
                   break;
                 case "img":
                   if(_hasGallery && node.attributes["class"].contains("slideshow")) //remove first slideshow image from body
                     return Container();
+                  break;
+                case "a":
+                  return GestureDetector(
+                    onTap: () => node.attributes.containsKey("href") ? _launchLink(node.attributes["href"]) : {},
+                    child: Text(
+                      node.innerHtml,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                        decoration: TextDecoration.underline
+                      ),
+                    ),
+                  );
                   break;
                 case "div":
                   if(node.attributes.containsKey("class") && node.attributes["class"].contains("slideshow")){ //remove annoying gallery sticker, replace with instructions to view gallery
@@ -155,6 +166,7 @@ class _ArticleViewState extends State<ArticleView>{
             }
           },
         ), //article content
+        SizedBox(height: 35.0,), //some final padding at the bottom
       ]),
     );
   }
@@ -173,7 +185,7 @@ class _ArticleViewState extends State<ArticleView>{
     }
   }
 
-  Widget _iframe(var node){
+  Widget _getYouTubeVideo(var node){
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 15.0),
       child: Row(
@@ -191,7 +203,7 @@ class _ArticleViewState extends State<ArticleView>{
                     imageUrl: "https://img.youtube.com/vi/" + node.attributes["src"].split("/")[node.attributes["src"].split("/").length - 1] + "/1.jpg",
                     fit: BoxFit.cover,
                   ),
-                  Icon(Icons.play_circle_filled, color: Colors.white,),
+                  Icon(Icons.play_circle_filled, color: Colors.white, size: 50.0),
                 ],
               ),
             ),

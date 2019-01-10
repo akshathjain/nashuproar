@@ -21,7 +21,8 @@ class NASHUproar extends StatelessWidget {
       title: 'NASH Uproar',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
-        primaryColor: Colors.yellow.shade700,
+        primaryColor: Colors.yellow.shade600,
+        primaryColorDark: Colors.yellow.shade900,
         accentColor: Colors.black
       ),
       home: HomePage(),
