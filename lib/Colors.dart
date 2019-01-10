@@ -1,3 +1,9 @@
+/*
+Name: Akshath Jain
+Date: 1/10/18
+Purpose: colors all in one place
+*/
+
 import 'package:flutter/material.dart';
 const Color PRIMARY_COLOR_DARK            = Color.fromARGB(255, 33, 33, 33);
 const Color PRIMARY_COLOR_DARK_LIGHTER      = Color.fromARGB(255, 72, 72, 72);

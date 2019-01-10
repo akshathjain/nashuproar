@@ -1,3 +1,9 @@
+/*
+Name: Akshath Jain
+Date: 1/10/18
+Purpose: just a bunch of utilitary functions
+*/
+
 import 'package:flutter/material.dart';
 import 'Colors.dart';
 

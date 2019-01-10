@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:share/share.dart';
 import 'Utils.dart';
 import 'Gallery.dart';
 import 'Colors.dart';
+import 'flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
 
 class ArticleView extends StatefulWidget{
   final String id;
@@ -132,18 +132,6 @@ class _ArticleViewState extends State<ArticleView>{
                 case "img":
                   if(_hasGallery && node.attributes["class"].contains("slideshow")) //remove first slideshow image from body
                     return Container();
-                  break;
-                case "a":
-                  return GestureDetector(
-                    onTap: () => node.attributes.containsKey("href") ? _launchLink(node.attributes["href"]) : {},
-                    child: Text(
-                      node.innerHtml,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorDark,
-                        decoration: TextDecoration.underline
-                      ),
-                    ),
-                  );
                   break;
                 case "div":
                   if(node.attributes.containsKey("class") && node.attributes["class"].contains("slideshow")){ //remove annoying gallery sticker, replace with instructions to view gallery
