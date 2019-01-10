@@ -37,7 +37,12 @@ class _ArticleViewState extends State<ArticleView>{
         _info = m;
 
         //determines if article has a gallery
-        _determineHasGallery();
+        List split = _info["content"]["rendered"].split(" ");
+        if(split.indexOf("photoids") != -1){
+          _hasGallery = true;
+          _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
+          _galleryIds.forEach((i) => i = int.tryParse(i)); //convert to int
+        }
       });
     });
   }
@@ -76,9 +81,8 @@ class _ArticleViewState extends State<ArticleView>{
   //therefore, need to do some strange return processing stuff
   Widget _createBody(){
     //Case: the information still needs to be loaded
-    if(_info == null){
+    if(_info == null)
       return SliverFillRemaining(child: Center(child: CircularProgressIndicator()),);
-    }
     
     double pads = 20.0;
 
@@ -121,9 +125,15 @@ class _ArticleViewState extends State<ArticleView>{
                 case "iframe":
                   return _iframe(node);
                   break;
-                case "script":
-                  //_parseScriptForGalleryInfo(node.innerHtml);
+                case "img":
+                  if(!_hasGallery)
+                    return CachedNetworkImage(imageUrl: node.attributes["src"],);
+                  // return Gallery(
+                  //   ids: _galleryIds;
+                  // );
                   break;
+                case "script":
+                  //print(node.innerHtml);
               }
             }
           },
@@ -171,23 +181,6 @@ class _ArticleViewState extends State<ArticleView>{
           ),
         ]
       )
-    );
-  }
-  
-  void _determineHasGallery(){
-    Html(
-      data: _info["content"]["rendered"],
-      customRender: (node, children){
-        if(node is dom.Element){
-          if(node.localName == "script"){
-            List split = node.innerHtml.split(" ");
-            _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
-            _galleryIds.forEach((i) => i = int.tryParse(i)); //convert to int
-            _hasGallery = true;
-            return;
-          }
-        }
-      },
     );
   }
 
