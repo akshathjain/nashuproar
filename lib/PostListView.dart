@@ -29,7 +29,6 @@ class PostListView extends StatefulWidget{
 }
 
 class _PostListViewState extends State<PostListView>{
-
   @override
   Widget build(BuildContext context) {
     if(widget.posts == null || widget.posts.isEmpty){
