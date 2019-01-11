@@ -36,18 +36,20 @@ class _ArticleViewState extends State<ArticleView>{
   void initState() {
     super.initState();
     fetchArticleInfo().then((Map m){
-      setState(() {
-        _info = m;
+      if(mounted){
+        setState(() {
+          _info = m;
 
-        //determines if article has a gallery
-        List split = _info["content"]["rendered"].split(" ");
-        if(split.indexOf("photoids") != -1){
-          _hasGallery = true;
-          _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
-          for(int i = 0; i < _galleryIds.length; i++) //get rid of all extraneous stuff
-            _galleryIds[i] = _galleryIds[i].toString().replaceAll(RegExp("[^0-9]"), "");
-        }
-      });
+          //determines if article has a gallery
+          List split = _info["content"]["rendered"].split(" ");
+          if(split.indexOf("photoids") != -1){
+            _hasGallery = true;
+            _galleryIds = split[split.indexOf("photoids") + 2].toString().replaceAll("\'", "").replaceAll(";", "").split(","); //get the numbers
+            for(int i = 0; i < _galleryIds.length; i++) //get rid of all extraneous stuff
+              _galleryIds[i] = _galleryIds[i].toString().replaceAll(RegExp("[^0-9]"), "");
+          }
+        });
+      }
     });
   }
 
@@ -117,6 +119,7 @@ class _ArticleViewState extends State<ArticleView>{
         Html(
           padding: EdgeInsets.only(left: pads, right: pads),
           data: _info["content"]["rendered"],
+          onLinkTap: (url) => _launchLink(url),
           defaultTextStyle: TextStyle(
             color: Theme.of(context).brightness == Brightness.dark ? TEXT_ON_DARK : TEXT_ON_LIGHT,
             fontSize: 15.0
