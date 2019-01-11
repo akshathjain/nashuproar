@@ -66,6 +66,9 @@ class _ComplexNetworkImageState extends State<_ComplexNetworkImage> with Automat
     if(_info == null)
       return Center(child: CircularProgressIndicator());
 
+    if(_info["source_url"] == null)
+      return Center(child: Text("Unable to access image"));
+
     return CachedNetworkImage(
       imageUrl: _info["source_url"],
       fit: BoxFit.cover,

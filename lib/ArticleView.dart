@@ -94,6 +94,8 @@ class _ArticleViewState extends State<ArticleView>{
     return SliverList(
       delegate: SliverChildListDelegate([
         _hasGallery ? _getGallery() : _getFeaturedImage(),
+        
+       
         Padding( //title
           padding: EdgeInsets.fromLTRB(pads, 16.0, pads, 6.0),
           child:  Html(
@@ -101,21 +103,17 @@ class _ArticleViewState extends State<ArticleView>{
             defaultTextStyle: getTitleLargeStyle(context),
           ), //title
         ),
-        Padding( //author
-          padding: EdgeInsets.fromLTRB(pads, 0.0, pads, 2.0),
-          child: Text(
-            _info["_embedded"]["author"][0]["name"] == "adviser" ? "Unknown Author" : _info["_embedded"]["author"][0]["name"],
-            style: getAuthorStyle(context),
-          ), //author
-        ),
-        Padding( //date
-          padding: EdgeInsets.only(left: pads, right: pads, bottom: 20.0),
-          child: Text(
-            getDate(DateTime.parse(_info["date"])), //date
-            style: getDateStyle(context),
-          ),
-        ),
+        
+        
+        _getAuthor(pads), //author
+        
+        
+        _showDate(_info["title"]["rendered"], getDate(DateTime.parse(_info["date"])), pads),
+       
+       
         _getPodcast(),
+        
+        
         Html(
           padding: EdgeInsets.only(left: pads, right: pads),
           data: _info["content"]["rendered"],
@@ -173,6 +171,19 @@ class _ArticleViewState extends State<ArticleView>{
     }catch(NoSuchMethodError){
       return Text("");
     }
+  }
+
+  Widget _getAuthor(double leftRightPadding){
+    if(_info["_embedded"]["author"][0]["name"] == "adviser")
+      return Container();
+    
+    return Padding( //author
+          padding: EdgeInsets.fromLTRB(leftRightPadding, 0.0, leftRightPadding, 2.0),
+          child: Text(
+            _info["_embedded"]["author"][0]["name"] == "adviser" ? "Unknown Author" : _info["_embedded"]["author"][0]["name"],
+            style: getAuthorStyle(context),
+          ), //author
+    );
   }
 
   //determines if article is podcast, if is, return link to listen
@@ -233,6 +244,19 @@ class _ArticleViewState extends State<ArticleView>{
   void _launchLink(String url) async{
     if(await canLaunch(url))
       await launch(url);
+  }
+
+  Widget _showDate(String title, String date, double leftRightPadding){
+    if(title == date)
+      return Container();
+    
+    return Padding(
+      padding: EdgeInsets.fromLTRB(leftRightPadding, 0.0, leftRightPadding, 20.0),
+      child: Text(
+        date,
+        style: getDateStyle(context),
+      )
+    );
   }
 
   Future<Map> fetchArticleInfo() async{

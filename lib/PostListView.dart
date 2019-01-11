@@ -63,60 +63,74 @@ class _PostListViewState extends State<PostListView>{
   }
 
   Widget _cardNormal(int i){
+    Widget image = _featuredImage(i);
+
     return Card(
       child: InkWell(
         onTap: () => _openPost(context, i),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
+        child: 
+        Column(
           children: <Widget>[
-            _featuredImage(i),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Html(
-                      data: widget.posts[i]["title"]["rendered"],
-                      defaultTextStyle: getTitleNormalStyle(context),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                image == null ? Container() : image,
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, image== null ? 0.0 : 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Html(
+                          data: widget.posts[i]["title"]["rendered"],
+                          defaultTextStyle: getTitleNormalStyle(context),
+                        ),
+                        _showDate(widget.posts[i]["title"]["rendered"], getDate(DateTime.parse(widget.posts[i]["date"]))),
+                      ],
                     ),
-                    Text(
-                      getDate(DateTime.parse(widget.posts[i]["date"])),
-                      style: getDateStyle(context),
-                    ),
-                  ],
-                ),
-              ) 
-            )
+                  ) 
+                )
+              ],
+            ),
+            image != null ? Container() : Html(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+              data: widget.posts[i]["excerpt"]["rendered"],
+            ),
+            SizedBox(height: image == null ? 6.0 : 0.0),
           ],
         )
-      ),
+        ),
     );
   }
 
   Widget _cardLarge(int i){
+    Widget image = _featuredImageLarge(i);
+    double leftRight = (image == null ? 15.0 : 20.0);
+
     return Card(
       child: InkWell(
         onTap: () => _openPost(context, i),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _featuredImageLarge(i),
+            image == null ? Container() : image,
             Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+              padding: EdgeInsets.fromLTRB(leftRight, 20.0, leftRight, 0.0),
               child: Html(
                 data: widget.posts[i]["title"]["rendered"],
                 defaultTextStyle: getTitleLargeStyle(context)
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-              child: Text(
-                getDate(DateTime.parse(widget.posts[i]["date"])),
-                style: getDateStyle(context)
-              )
+              padding: EdgeInsets.fromLTRB(leftRight, 0.0, leftRight, 0.0),
+              child: _showDate(widget.posts[i]["title"]["rendered"], getDate(DateTime.parse(widget.posts[i]["date"]))),
             ),
+            image != null ? Container() : Html(
+              padding: EdgeInsets.only(left: leftRight, right: leftRight),
+              data: widget.posts[i]["excerpt"]["rendered"],
+            ),
+            SizedBox(height: image == null ? 6.0 : 20.0),
           ],
         ),
       ),
@@ -133,7 +147,7 @@ class _PostListViewState extends State<PostListView>{
           ),
         );
     }catch(NoSuchMethodError){
-      return Container();
+      return null;
     }
   }
 
@@ -147,8 +161,18 @@ class _PostListViewState extends State<PostListView>{
         ),
       );
     }catch(NoSuchMethodError){
-      return Container();
+      return null;
     }
+  }
+
+  Widget _showDate(String title, String date){
+    if(title == date)
+      return Container();
+    
+    return Text(
+      date,
+      style: getDateStyle(context),
+    );
   }
 
   void _openPost(BuildContext context, int index){
