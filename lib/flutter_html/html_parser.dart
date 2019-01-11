@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:nashuproar/Colors.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 typedef CustomRender = Widget Function(dom.Node node, List<Widget> children);
 typedef OnLinkTap = void Function(String url);
@@ -460,13 +459,10 @@ class HtmlParser {
           );
         case "img":
           if (node.attributes['src'] != null) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CachedNetworkImage(imageUrl: node.attributes['src'])
-              ],
+            return Container(
+              alignment: Alignment.center,
+              child: Image.network(node.attributes['src'])
             );
-            
           } else if (node.attributes['alt'] != null) {
             //Temp fix for https://github.com/flutter/flutter/issues/736
             if (node.attributes['alt'].endsWith(" ")) {
