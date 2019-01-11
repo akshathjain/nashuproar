@@ -9,6 +9,7 @@ import 'ArticleView.dart';
 import 'flutter_html/flutter_html.dart';
 import 'Utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'Colors.dart';
 
 class PostListView extends StatefulWidget{
   List posts;
@@ -85,6 +86,7 @@ class _PostListViewState extends State<PostListView>{
                           data: widget.posts[i]["title"]["rendered"],
                           defaultTextStyle: getTitleNormalStyle(context),
                         ),
+                        SizedBox(height: 2.0,),
                         _showDate(widget.posts[i]["title"]["rendered"], getDate(DateTime.parse(widget.posts[i]["date"]))),
                       ],
                     ),
@@ -95,6 +97,9 @@ class _PostListViewState extends State<PostListView>{
             image != null ? Container() : Html(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0),
               data: widget.posts[i]["excerpt"]["rendered"],
+              defaultTextStyle: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark ? TEXT_ON_DARK : TEXT_ON_LIGHT
+              ),
             ),
             SizedBox(height: image == null ? 6.0 : 0.0),
           ],
@@ -121,6 +126,7 @@ class _PostListViewState extends State<PostListView>{
                 defaultTextStyle: getTitleLargeStyle(context)
               ),
             ),
+            SizedBox(height: 2.0,),
             Padding(
               padding: EdgeInsets.fromLTRB(leftRight, 0.0, leftRight, 0.0),
               child: _showDate(widget.posts[i]["title"]["rendered"], getDate(DateTime.parse(widget.posts[i]["date"]))),
@@ -128,6 +134,9 @@ class _PostListViewState extends State<PostListView>{
             image != null ? Container() : Html(
               padding: EdgeInsets.only(left: leftRight, right: leftRight),
               data: widget.posts[i]["excerpt"]["rendered"],
+              defaultTextStyle: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark ? TEXT_ON_DARK : TEXT_ON_LIGHT
+              ),
             ),
             SizedBox(height: image == null ? 6.0 : 20.0),
           ],

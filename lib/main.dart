@@ -9,12 +9,38 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'CategoryView.dart';
 import 'SearchView.dart';
+import 'SettingsDialog.dart';
 import 'Colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(NASHUproar());
 
-class NASHUproar extends StatelessWidget {
-  // This widget is the root of your application.
+class NASHUproar extends StatefulWidget {
+  NASHUproar({Key key}) : super(key: key);
+
+  @override
+  _NASHUproarState createState() => new _NASHUproarState();
+}
+
+class _NASHUproarState extends State<NASHUproar>{
+  Brightness _brightness = Brightness.light;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initSharedPrefs().then((SharedPreferences prefs){
+      setState(() {
+        int theme = prefs.getInt("theme-value");
+        print(theme);
+        if(theme == SettingsDialog.LIGHT_VALUE)
+          _brightness = Brightness.light;
+        else if(theme == SettingsDialog.DARK_VALUIE)
+          _brightness = Brightness.dark;
+      }); //rebuild
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,12 +51,17 @@ class NASHUproar extends StatelessWidget {
         primaryColorLight: PRIMARY_COLOR_DARK_LIGHTER,
         primaryColorDark: PRIMARY_COLOR_DARK_DARKER,
         accentColor: ACCENT_COLOR,
-        brightness: Brightness.light,
+        brightness: _brightness,
       ),
       home: HomePage(),
     );
   }
+
+  Future<SharedPreferences> _initSharedPrefs() async{
+    return await SharedPreferences.getInstance();
+  }
 }
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -63,15 +94,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            splashColor: Colors.black26,
-            highlightColor: Colors.black12,
+            tooltip: "Search",
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
                 builder: (context) => new SearchView()
               ));
             },
           ),
+
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem(
+                value: "settings",
+                child: Text("Settings"),
+              ),
+              const PopupMenuItem(
+                value: "about",
+                child: Text("About"),
+              ),
+            ],
+
+            onSelected: (String choice){
+              if(choice == "settings"){
+                showDialog(
+                  context: context, 
+                  child: SettingsDialog()
+                );
+              }else if(choice == "about"){
+                // Navigator.push(context, new MaterialPageRoute(
+                //   builder: (context) => new SearchView()
+                // ));
+              }
+            },
+          ),
         ],
+
         bottom: TabBar(
           isScrollable: true,
           tabs: _createTabs(),

@@ -66,14 +66,12 @@ class _ArticleViewState extends State<ArticleView>{
               IconButton(
                 icon: Icon(Icons.share),
                 onPressed: () => Share.share(_info == null ? "" : _info["link"]),
-                splashColor: Colors.black26,
-                highlightColor: Colors.black12,
+                tooltip: "Share",
               ),
               IconButton(
                 icon: Icon(Icons.open_in_browser),
                 onPressed: () => _launchLink(_info == null ? "" : _info["link"]),
-                splashColor: Colors.black26,
-                highlightColor: Colors.black12,
+                tooltip: "Open in browser",
               ),
             ],
           ),
