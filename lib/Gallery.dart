@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_page_indicator/flutter_page_indicator.dart';
+import 'Colors.dart';
 
 class Gallery extends StatefulWidget{
   List ids; 
@@ -18,15 +20,49 @@ class Gallery extends StatefulWidget{
 }
 
 class _GalleryState extends State<Gallery>{
-  
-  @override Widget build(BuildContext context) {
-    return PageView.builder(
-      itemCount: widget.ids.length,
-      itemBuilder: (context, i){
-        return _ComplexNetworkImage(
-          id: widget.ids[i],
-        );
-      },
+  PageController _controller;
+
+  @override
+  void initState() {
+    _controller = new PageController();
+    super.initState();
+  }
+
+  @override 
+  Widget build(BuildContext context) {
+    return 
+    Container(
+      color: Colors.grey,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          //swiping view
+          PageView.builder(
+            itemCount: widget.ids.length,
+            controller: _controller,
+            itemBuilder: (context, i){
+              return _ComplexNetworkImage(
+                id: widget.ids[i],
+              );
+            },
+          ),
+
+
+          //dot indicators
+          Container(
+            margin: const EdgeInsets.only(bottom: 12.0),
+            child: PageIndicator(
+              layout: PageIndicatorLayout.WARM,
+              size: 8.0,
+              controller: _controller,
+              space: 5.0,
+              count: widget.ids.length,
+              color: Color.fromARGB(140, 255, 255, 255),
+              activeColor: ACCENT_COLOR,
+            )
+          ),
+        ]
+      )
     );
   }
 }
