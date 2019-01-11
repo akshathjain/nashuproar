@@ -36,7 +36,17 @@ class _SettingsDialogState extends State<SettingsDialog>{
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Select Theme"),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Select Theme"),
+          SizedBox(height: 6.0,),
+          Text(
+            "Requires app restart",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+          ),
+        ]
+      ),
       content: SingleChildScrollView(
         child: ListBody(
           children: _createBody(),
