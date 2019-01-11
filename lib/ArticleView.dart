@@ -164,16 +164,32 @@ class _ArticleViewState extends State<ArticleView>{
 
   Widget _getFeaturedImage(){
     try{
-      return AspectRatio(
-        aspectRatio: 16.0/10.0,
-        child: CachedNetworkImage(
-          imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"],
-          fit: BoxFit.cover,
+      return Container(
+        color: Colors.grey.shade200,
+        child: AspectRatio(
+          aspectRatio: 16.0/10.0,
+          child: CachedNetworkImage(
+            imageUrl: _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["large"]["source_url"],
+            fit: _getImageFit(),
+          )
         )
       );
     }catch(NoSuchMethodError){
-      return Text("");
+      return Container();
     }
+  }
+
+  BoxFit _getImageFit(){
+    //case doesn't contain proper keys
+    if(!_info["_embedded"]["wp:featuredmedia"][0].containsKey("media_details") || !_info["_embedded"]["wp:featuredmedia"][0]["media_details"].containsKey("height") || !_info["_embedded"]["wp:featuredmedia"][0]["media_details"].containsKey("width"))
+      return BoxFit.cover;
+
+    //width > height (landscape)
+    if(_info["_embedded"]["wp:featuredmedia"][0]["media_details"]["width"] > _info["_embedded"]["wp:featuredmedia"][0]["media_details"]["height"])
+      return BoxFit.cover;
+    
+    //height > width (portrait)
+    return BoxFit.fitHeight;
   }
 
   Widget _getAuthor(double leftRightPadding){
@@ -237,7 +253,7 @@ class _ArticleViewState extends State<ArticleView>{
 
   Widget _getGallery(){
     return AspectRatio(
-      aspectRatio: 16.0 / 9.0,
+      aspectRatio: 16.0 / 10.0,
       child: Gallery(
         ids: _galleryIds,
       )

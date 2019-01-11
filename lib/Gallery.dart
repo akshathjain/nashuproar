@@ -32,7 +32,7 @@ class _GalleryState extends State<Gallery>{
   Widget build(BuildContext context) {
     return 
     Container(
-      color: Colors.grey,
+      color: Colors.grey.shade200,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
@@ -107,8 +107,21 @@ class _ComplexNetworkImageState extends State<_ComplexNetworkImage> with Automat
 
     return CachedNetworkImage(
       imageUrl: _info["source_url"],
-      fit: BoxFit.cover,
+      fit: _getImageFit(),
     );
+  }
+
+  BoxFit _getImageFit(){
+    //case doesn't contain proper keys
+    if(!_info.containsKey("media_details") || !_info["media_details"].containsKey("height") || !_info["media_details"].containsKey("width"))
+      return BoxFit.cover;
+
+    //width > height (landscape)
+    if(_info["media_details"]["width"] > _info["media_details"]["height"])
+      return BoxFit.cover;
+    
+    //height > width (portrait)
+    return BoxFit.fitHeight;
   }
 
   Future<Map> fetchImageInfo() async {
