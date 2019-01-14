@@ -33,7 +33,6 @@ class _NASHUproarState extends State<NASHUproar>{
     _initSharedPrefs().then((SharedPreferences prefs){
       setState(() {
         int theme = prefs.getInt("theme-value");
-        print(theme);
         if(theme == SettingsDialog.LIGHT_VALUE)
           _brightness = Brightness.light;
         else if(theme == SettingsDialog.DARK_VALUIE)
@@ -123,7 +122,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                 );
               }else if(choice == "about"){
                 Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new AboutView();
+                  builder: (context) => new AboutView()
                 ));
               }
             },
