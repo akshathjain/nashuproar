@@ -12,6 +12,7 @@ import 'SearchView.dart';
 import 'SettingsDialog.dart';
 import 'Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'AboutView.dart';
 
 void main() => runApp(NASHUproar());
 
@@ -121,9 +122,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                   child: SettingsDialog()
                 );
               }else if(choice == "about"){
-                // Navigator.push(context, new MaterialPageRoute(
-                //   builder: (context) => new SearchView()
-                // ));
+                Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new AboutView();
+                ));
               }
             },
           ),

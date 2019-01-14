@@ -32,10 +32,6 @@ class _SearchView extends State<SearchView>{
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        backgroundColor: Colors.white,
         title: new TextField(
           controller: _inputController,
           focusNode: _inputFocus,
@@ -45,8 +41,7 @@ class _SearchView extends State<SearchView>{
             hintText: 'Search',
           ),
           style: TextStyle(
-            fontSize: 20.0, 
-            color: Colors.black,
+            fontSize: 20.0,
             fontWeight: FontWeight.w500,
           ),
           onSubmitted: (String term){
