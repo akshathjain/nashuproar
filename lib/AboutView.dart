@@ -17,14 +17,18 @@ class AboutView extends StatefulWidget{
 }
 
 class _AboutViewState extends State<StatefulWidget>{
-  String _version;
+  String _version = "";
 
   @override
   void initState() {
     super.initState();
 
     PackageInfo.fromPlatform().then((PackageInfo pi){
-      _version = pi.version;
+      if(mounted){
+        setState(() {
+          _version = pi.version;
+        });
+      }
     });
   }
 
