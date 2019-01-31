@@ -1,4 +1,4 @@
-package com.example.nashuproar;
+package com.akshathjain.nashuproar;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
