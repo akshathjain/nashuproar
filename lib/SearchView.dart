@@ -9,6 +9,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'PostListView.dart';
+import 'Colors.dart';
 
 class SearchView extends StatefulWidget{
   SearchView({Key key}) : super(key: key);
@@ -39,10 +40,14 @@ class _SearchView extends State<SearchView>{
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: 'Search',
+            hintStyle: TextStyle(
+              color: Colors.grey
+            )
           ),
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w500,
+            color: TEXT_ON_DARK,
           ),
           onSubmitted: (String term){
             _page = 1;
