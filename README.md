@@ -16,9 +16,9 @@
 - [url_launcher](https://pub.dartlang.org/packages/url_launcher)
 
 ### Screenshots
-<img width="200px" src="screenshots/lighthome.png" />
-<img width="200px" src="screenshots/lightarticle.png" />
-<img width="200px" src="screenshots/lightsearch.png" />
-<img width="200px" src="screenshots/darkhome.png" />
-<img width="200px" src="screenshots/darkarticle.png" />
-<img width="200px" src="screenshots/darksearch.png" />
+<img width="200px" src="screenshots/ioslighthome.png" />
+<img width="200px" src="screenshots/ioslightarticle.png" />
+<img width="200px" src="screenshots/ioslightsearch.png" />
+<img width="200px" src="screenshots/iosdarkhome.png" />
+<img width="200px" src="screenshots/iosdarkarticle.png" />
+<img width="200px" src="screenshots/iosdarksearch.png" />
