@@ -6,6 +6,7 @@
 
 ### Open Source Licenses
 - [cached_network_image](https://pub.dartlang.org/packages/cached_network_image)
+- [flutter_html](https://github.com/Sub6Resources/flutter_html/blob/master/LICENSE)
 - [flutter_page_indicator](https://pub.dartlang.org/packages/flutter_page_indicator)
 - [html](https://pub.dartlang.org/packages/html)
 - [http](https://pub.dartlang.org/packages/http)
