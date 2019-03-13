@@ -18,6 +18,7 @@ class AboutView extends StatefulWidget{
 }
 
 class _AboutViewState extends State<StatefulWidget>{
+  String _appName = "";
   String _version = "";
 
   @override
@@ -27,6 +28,7 @@ class _AboutViewState extends State<StatefulWidget>{
     PackageInfo.fromPlatform().then((PackageInfo pi){
       if(mounted){
         setState(() {
+          _appName = pi.appName;
           _version = pi.version;
         });
       }
@@ -43,12 +45,12 @@ class _AboutViewState extends State<StatefulWidget>{
         padding: const EdgeInsets.fromLTRB(8.0, 24.0, 8.0, 12.0),
         children: <Widget>[
           
-          
-          Column( //about the app
+          //about the app
+          Column( 
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "The Uproar",
+                _appName,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24.0,
@@ -63,12 +65,46 @@ class _AboutViewState extends State<StatefulWidget>{
           SizedBox(height: 24.0,), //padding
           
           
+          //About The Uproar
+          Card(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _cardTitle("Mission Statement"),
+                  Text("The Uproar is the product of the Journalism classes at North Allegheny Senior High School in Wexford, PA. Contributions from the NATV classes allow the site to deliver multimedia to our readership."),
+                  
+                  SizedBox(height: 12.0,),
+                  
+                  Text("Our aim is to represent the student voice of the school and to provide the student body, the school faculty and administration, and the families of our community with timely reporting, compelling opinions, and entertaining miscellany. We are dedicated to the highest standard of journalistic integrity and strive to enhance school culture through our work."),
+                  
+                  SizedBox(height: 12.0,),
+                  
+                  Text("Opinions expressed in by-lined editorials reflect the views of the author and not the entire staff or student body. The Uproar welcomes letters to the editor, so please let us know what you think. Send an email titled “Letter to the Editor” to nashuproar@gmail.com. No anonymous letters will be published."),
+                  
+                  SizedBox(height: 12.0,),
+                  
+                  Text("The Uproar intends for this area to be used to foster reasonable, thoughtful discussion. Comments are expected to adhere to our standards and to be respectful and constructive. We therefore do not permit the use of profanity, foul language, personal attacks, or language that could be interpreted as libelous. Comments are reviewed and must be approved by the faculty adviser to ensure that they meet these standards. The Uproar does not allow anonymous comments, and we require a valid email address. The email address will not be displayed but will be used to confirm your comments."),
+                  
+                  SizedBox(height: 12.0,),
+                  
+                  Text("All advertising inquiries should be directed to the program adviser, Mr. Morris, at dmorris@northallegheny.org."),
+                ],
+              ),
+            ),
+          ),
+
+
+          SizedBox(height: 24.0,), //padding
+
+
           //about the developer
           Card( // about the dev
             child: InkWell(
               onTap: () => _launchLink("https://akshathjain.com"),
               child: Container(
-                padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -88,7 +124,7 @@ class _AboutViewState extends State<StatefulWidget>{
           //open source licenses
           Card(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -106,14 +142,22 @@ class _AboutViewState extends State<StatefulWidget>{
                   _link("shared_preferences", "https://github.com/flutter/plugins/blob/master/packages/shared_preferences/LICENSE"),
                   _link("url_launcher", "https://github.com/flutter/plugins/blob/master/packages/url_launcher/LICENSE"),
 
+                  SizedBox(height: 8.0,),
 
-                  RaisedButton(
-                    color: ACCENT_COLOR,
-                    child: Text("View All"),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return new LicensePage();
-                    })),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      RaisedButton(
+                        color: ACCENT_COLOR,
+                        child: Text("View All"),
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return new LicensePage();
+                        })),
+                      ),
+                    ],
                   ),
+
+                  
                 ],
               ),
             ),
@@ -126,12 +170,12 @@ class _AboutViewState extends State<StatefulWidget>{
           //copyright
           Card(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+              padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   _cardTitle("Copyright"),
-                  Text("© " + DateTime.now().year.toString() + " Akshath Jain. All Rights Reserved"),
+                  Text("© 2019" + (DateTime.now().year.toString() == "2019" ? "" : "-" + DateTime.now().year.toString()) + " Akshath Jain. All Rights Reserved"),
                 ],
               ),
             ),
