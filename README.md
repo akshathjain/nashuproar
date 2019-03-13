@@ -22,3 +22,6 @@
 <img width="200px" src="screenshots/iosdarkhome.png" />
 <img width="200px" src="screenshots/iosdarkarticle.png" />
 <img width="200px" src="screenshots/iosdarksearch.png" />
+
+### Copyright
+© 2019 Akshath Jain. All Rights Reserved.
