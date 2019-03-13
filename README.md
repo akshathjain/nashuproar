@@ -4,6 +4,11 @@
 - Flutter based Android & iOS application for the [NASH Uproar](https://nashuproar.org).
 - Pulls data using the Wordpress API 
 
+### Downloading
+- Android: [Google Play Store](https://play.google.com/store/apps/details?id=com.akshathjain.nashuproar)
+- iOS: Coming Soon!
+- Alternatively, you can clone this repo and build either the iOS or Android app yourself
+
 ### Open Source Licenses
 - [cached_network_image](https://pub.dartlang.org/packages/cached_network_image)
 - [flutter_html](https://pub.dartland.org/packages/flutter_html)
