@@ -48,7 +48,7 @@ class _AboutViewState extends State<StatefulWidget>{
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "NASH Uproar",
+                "The Uproar",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24.0,

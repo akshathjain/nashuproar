@@ -45,7 +45,7 @@ class _NASHUproarState extends State<NASHUproar>{
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'NASH Uproar',
+      title: 'The Uproar',
       theme: ThemeData(
         primaryColor: PRIMARY_COLOR_DARK,
         primaryColorLight: PRIMARY_COLOR_DARK_LIGHTER,
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NASH Uproar"),
+        title: Text("The Uproar"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
