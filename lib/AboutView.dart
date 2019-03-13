@@ -97,6 +97,7 @@ class _AboutViewState extends State<StatefulWidget>{
 
 
                   _link("cached_network_image", "https://github.com/renefloor/flutter_cached_network_image/blob/master/LICENSE.md"),
+                  _link("flutter_html", "https://github.com/Sub6Resources/flutter_html/blob/master/LICENSE"),
                   _link("flutter_page_indicator", "https://github.com/best-flutter/flutter_page_indicator/blob/master/LICENSE"),
                   _link("html", "https://github.com/dart-lang/html/blob/master/LICENSE"),
                   _link("http", "https://github.com/dart-lang/http/blob/master/LICENSE"),
