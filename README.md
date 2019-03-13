@@ -24,4 +24,4 @@
 <img width="200px" src="screenshots/iosdarksearch.png" />
 
 ### Copyright
-© 2019 Akshath Jain. All Rights Reserved.
+© 2019 [Akshath Jain](https://akshathjain.com). All Rights Reserved.
