@@ -6,7 +6,7 @@ Purpose: generic class that displays a list of posts
 
 import 'package:flutter/material.dart';
 import 'ArticleView.dart';
-import 'flutter_html/flutter_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'Utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'Colors.dart';

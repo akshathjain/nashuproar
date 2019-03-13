@@ -14,7 +14,7 @@ import 'package:share/share.dart';
 import 'Utils.dart';
 import 'Gallery.dart';
 import 'Colors.dart';
-import 'flutter_html/flutter_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 
 class ArticleView extends StatefulWidget{
@@ -118,6 +118,11 @@ class _ArticleViewState extends State<ArticleView>{
           padding: EdgeInsets.only(left: pads, right: pads),
           data: _info["content"]["rendered"],
           onLinkTap: (url) => _launchLink(url),
+          linkStyle: TextStyle(
+            decoration: TextDecoration.underline,
+            color: ACCENT_COLOR,
+            decorationColor: ACCENT_COLOR
+          ),
           defaultTextStyle: TextStyle(
             color: Theme.of(context).brightness == Brightness.dark ? TEXT_ON_DARK : TEXT_ON_LIGHT,
             fontSize: 15.0
